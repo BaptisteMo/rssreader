@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const RSS_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+const RSS_PROXY_URL = 'https://rssreader-delta.vercel.app//';
 
 export async function fetchRSSFeed(url : string) {
   try {
