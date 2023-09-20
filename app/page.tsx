@@ -1,42 +1,27 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import { fetchArticlesFromRSS } from '../utils/rss'; // Assurez-vous que le chemin est correct
+import { fetchRSSFeed } from '../utils/rss';
 
 export default function ArticleList() {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [rssData, setRssData] = useState(null);
 
   useEffect(() => {
-    // Remplacez cette URL par l'URL du flux RSS que vous souhaitez utiliser
-    const rssFeedUrl = 'https://medium.com/feed/tag/freelancing';
+    const rssFeedUrl = 'https://medium.com/feed/tag/freelancing'; // Remplacez par l'URL du flux RSS que vous souhaitez utiliser
 
-    // Récupérez les articles lorsque le composant est monté
-    fetchArticlesFromRSS(rssFeedUrl)
-      .then((articles) => setArticles(articles))
-      .catch((error) => console.error('Erreur:', error));
+    fetchRSSFeed(rssFeedUrl)
+      .then(data => {
+        // Traitez les données du flux RSS ici
+        setRssData(data);
+      })
+      .catch(error => console.error('Erreur:', error));
   }, []);
-console.log(articles)
+
+  console.log(rssData)
+
   return (
     <div>
-      <h1>Articles</h1>
-      <ul>
-        {articles.map((article, index) => (
-          <li key={index}>
-            <a href={article.link} target="_blank" rel="noopener noreferrer">
-              {article.title}
-            </a>
-            <p>{article.description}</p>
-            <p>Publié le : {article.pubDate}</p>
-          </li>
-        ))}
-      </ul>
+      {/* Affichez les articles en utilisant les données du flux RSS (rssData) */}
     </div>
   );
-}
-
-interface Article {
-  title: string;
-  link: string;
-  description: string;
-  pubDate: string;
 }

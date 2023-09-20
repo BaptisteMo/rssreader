@@ -1,24 +1,13 @@
-// Importez le module rss-parser
-import Parser from 'rss-parser';
+import axios from 'axios';
 
-// Créez une fonction asynchrone pour récupérer des articles depuis un flux RSS
-export  async function fetchArticlesFromRSS(url: string) {
+const RSS_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+
+export async function fetchRSSFeed(url : string) {
   try {
-    const parser = new Parser();
-    // Analysez le flux RSS
-    const feed = await parser.parseURL(url);
-
-    // Extrayez les articles du flux
-    const articles = feed.items.map((item) => ({
-      title: item.title || '',
-      link: item.link || '',
-      description: item.content || item.description || '',
-      pubDate: item.pubDate || '',
-    }));
-
-    return articles;
+    const response = await axios.get(`${RSS_PROXY_URL}${url}`);
+    return response.data;
   } catch (error) {
-    console.error('Erreur lors de la récupération des articles depuis le flux RSS:', error);
-    return [];
+    console.error('Erreur lors de la récupération du flux RSS:', error);
+    throw error;
   }
 }
